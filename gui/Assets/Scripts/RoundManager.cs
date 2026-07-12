@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class RoundManager : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class RoundManager : MonoBehaviour
     private Vector3 posicaoInicialP2;
 
     private bool roundEmAndamento = false;
+    private bool partidaFinalizada = false;
+
+
+    public static string vencedor;
 
 
     void Start()
@@ -39,7 +44,7 @@ public class RoundManager : MonoBehaviour
 
     public void Player1WinsRound()
     {
-        if(!roundEmAndamento)
+        if(!roundEmAndamento || partidaFinalizada)
             return;
 
 
@@ -53,13 +58,17 @@ public class RoundManager : MonoBehaviour
 
         VerificarVencedor();
 
-        StartCoroutine(RestartRound());
+        if(!partidaFinalizada)
+        {
+            StartCoroutine(RestartRound());
+        }
     }
+
 
 
     public void Player2WinsRound()
     {
-        if(!roundEmAndamento)
+        if(!roundEmAndamento || partidaFinalizada)
             return;
 
 
@@ -73,7 +82,10 @@ public class RoundManager : MonoBehaviour
 
         VerificarVencedor();
 
-        StartCoroutine(RestartRound());
+        if(!partidaFinalizada)
+        {
+            StartCoroutine(RestartRound());
+        }
     }
 
 
@@ -82,18 +94,35 @@ public class RoundManager : MonoBehaviour
     {
         if(pontosP1 >= 2)
         {
+            partidaFinalizada = true;
+
+            vencedor = "Jogador 1";
+
             Debug.Log("JOGADOR 1 VENCEU A PARTIDA!");
-            
-            // Depois vamos carregar a cena de vitória
+
+            StartCoroutine(CarregarTelaVitoria());
         }
 
 
         if(pontosP2 >= 2)
         {
+            partidaFinalizada = true;
+
+            vencedor = "Jogador 2";
+
             Debug.Log("JOGADOR 2 VENCEU A PARTIDA!");
 
-            // Depois vamos carregar a cena de vitória
+            StartCoroutine(CarregarTelaVitoria());
         }
+    }
+
+
+
+    IEnumerator CarregarTelaVitoria()
+    {
+        yield return new WaitForSeconds(2);
+
+        SceneManager.LoadScene("Vitoria");
     }
 
 
