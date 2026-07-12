@@ -1,19 +1,27 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+
     public enum GameState
     {
-        Iniciando,
         MenuPrincipal,
-        Gameplay
+        Gameplay,
+        Vitoria
     }
 
-    public GameState CurrentState;
+
+    public GameState estadoAtual;
+
+
+    // ESCOLHA DAS BOLINHAS
+    public string bolinhaJogador1;
+    public string bolinhaJogador2;
+
+
 
     private void Awake()
     {
@@ -28,43 +36,62 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+
     private void Start()
     {
-        SetState(GameState.Iniciando);
-        LoadScene("Splash");
+        estadoAtual = GameState.MenuPrincipal;
     }
 
-    public void SetState(GameState newState)
+
+
+    public void LoadScene(string nomeCena)
     {
-        CurrentState = newState;
-        Debug.Log("Estado atual: " + newState);
+        SceneManager.LoadScene(nomeCena);
     }
 
-    public void LoadScene(string sceneName)
+
+
+    public void IniciarGameplay()
     {
-        SceneManager.LoadScene(sceneName);
+        estadoAtual = GameState.Gameplay;
 
-        switch (sceneName)
-        {
-            case "MenuPrincipal":
-                SetState(GameState.MenuPrincipal);
-                break;
-
-            case "SampleScene":
-                SetState(GameState.Gameplay);
-
-                // Carrega a cena GUI junto da Gameplay
-                SceneManager.LoadScene("GUI", LoadSceneMode.Additive);
-
-                Debug.Log("Gameplay carregada");
-                Debug.Log("GUI carregada");
-                break;
-        }
+        SceneManager.LoadScene("SampleScene");
     }
+
+
+
+    public void EscolherBolinhaJogador1(string nomeBolinha)
+    {
+        bolinhaJogador1 = nomeBolinha;
+
+        Debug.Log("Jogador 1 escolheu: " + bolinhaJogador1);
+    }
+
+
+
+    public void EscolherBolinhaJogador2(string nomeBolinha)
+    {
+        bolinhaJogador2 = nomeBolinha;
+
+        Debug.Log("Jogador 2 escolheu: " + bolinhaJogador2);
+    }
+
+
+
+    public void IrParaVitoria()
+    {
+        estadoAtual = GameState.Vitoria;
+
+        SceneManager.LoadScene("Vitoria");
+    }
+
+
 
     public void QuitGame()
     {
         Debug.Log("Saindo do jogo...");
+
         Application.Quit();
     }
 }
