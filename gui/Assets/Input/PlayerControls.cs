@@ -205,7 +205,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""id"": ""104376a9-bcaf-4849-b316-b1f908b0c9a9"",
             ""actions"": [
                 {
-                    ""name"": ""Move2"",
+                    ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""c1afa33d-7341-4d5a-983e-b809f52ea327"",
                     ""expectedControlType"": ""Vector2"",
@@ -240,7 +240,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move2"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -251,7 +251,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move2"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -262,7 +262,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move2"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -273,7 +273,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move2"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -284,14 +284,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move2"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
                     ""id"": ""648573da-3257-4385-8075-e33e74135304"",
-                    ""path"": ""<Keyboard>/rightCtrl"",
+                    ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -322,7 +322,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player1_Confirm = m_Player1.FindAction("Confirm", throwIfNotFound: true);
         // Player2
         m_Player2 = asset.FindActionMap("Player2", throwIfNotFound: true);
-        m_Player2_Move2 = m_Player2.FindAction("Move2", throwIfNotFound: true);
+        m_Player2_Move = m_Player2.FindAction("Move", throwIfNotFound: true);
         m_Player2_Push = m_Player2.FindAction("Push", throwIfNotFound: true);
         m_Player2_Confirm = m_Player2.FindAction("Confirm", throwIfNotFound: true);
     }
@@ -524,7 +524,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     // Player2
     private readonly InputActionMap m_Player2;
     private List<IPlayer2Actions> m_Player2ActionsCallbackInterfaces = new List<IPlayer2Actions>();
-    private readonly InputAction m_Player2_Move2;
+    private readonly InputAction m_Player2_Move;
     private readonly InputAction m_Player2_Push;
     private readonly InputAction m_Player2_Confirm;
     /// <summary>
@@ -539,9 +539,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// </summary>
         public Player2Actions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Player2/Move2".
+        /// Provides access to the underlying input action "Player2/Move".
         /// </summary>
-        public InputAction @Move2 => m_Wrapper.m_Player2_Move2;
+        public InputAction @Move => m_Wrapper.m_Player2_Move;
         /// <summary>
         /// Provides access to the underlying input action "Player2/Push".
         /// </summary>
@@ -576,9 +576,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_Player2ActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_Player2ActionsCallbackInterfaces.Add(instance);
-            @Move2.started += instance.OnMove2;
-            @Move2.performed += instance.OnMove2;
-            @Move2.canceled += instance.OnMove2;
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
             @Push.started += instance.OnPush;
             @Push.performed += instance.OnPush;
             @Push.canceled += instance.OnPush;
@@ -596,9 +596,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="Player2Actions" />
         private void UnregisterCallbacks(IPlayer2Actions instance)
         {
-            @Move2.started -= instance.OnMove2;
-            @Move2.performed -= instance.OnMove2;
-            @Move2.canceled -= instance.OnMove2;
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
             @Push.started -= instance.OnPush;
             @Push.performed -= instance.OnPush;
             @Push.canceled -= instance.OnPush;
@@ -675,12 +675,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IPlayer2Actions
     {
         /// <summary>
-        /// Method invoked when associated input action "Move2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMove2(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Push" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

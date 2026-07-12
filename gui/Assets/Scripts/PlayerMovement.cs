@@ -1,28 +1,31 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 5f;
-
     private Rigidbody rb;
-    private Vector3 movement;
+    private Vector2 moveInput;
 
-    private void Start()
+    private BolinhaController bolinha;
+
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        bolinha = GetComponent<BolinhaController>();
     }
 
-    private void Update()
+    public void OnMove(InputValue value)
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-
-        movement = new Vector3(horizontal, 0f, vertical);
+        moveInput = value.Get<Vector2>();
     }
 
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+        Vector3 movement = new Vector3(moveInput.x, 0f, moveInput.y);
+
+        rb.MovePosition(
+            rb.position +
+            movement * bolinha.VelocidadeAtual * Time.fixedDeltaTime);
     }
 }

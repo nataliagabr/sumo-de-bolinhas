@@ -11,6 +11,12 @@ public class BolinhaController : MonoBehaviour
     public float VelocidadeAtual { get; private set; }
     public float ForcaAtual { get; private set; }
 
+    [Header("Moedas")]
+    public int moedas = 0;
+    public float aumentoForca = 1f;
+    public float aumentoPeso = 0.2f;
+    public float reducaoVelocidade = 0.2f;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -37,5 +43,18 @@ public class BolinhaController : MonoBehaviour
 
         if (renderer != null && dados.material != null)
             renderer.material = dados.material;
+    }
+
+    public void ColetarMoeda()
+    {
+        moedas++;
+
+        ForcaAtual += aumentoForca;
+
+        rb.mass += aumentoPeso;
+
+        VelocidadeAtual = Mathf.Max(2f, VelocidadeAtual - reducaoVelocidade);
+
+        PlayerObserverManager.NotifyCoinChanged(moedas);
     }
 }
